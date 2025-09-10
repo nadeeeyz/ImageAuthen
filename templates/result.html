@@ -1,0 +1,237 @@
+{% extends "base.html" %}
+{% block title %} Image Authenticity Classifier{% endblock %}
+{% block container_class %}container-page{% endblock %}
+{% block content %}
+<style>
+    /* .container-page {
+    padding: 40px 0px 0 !important;
+} */
+</style>
+<nav class="navbar">
+    <div class="logo">
+        <img src="static/images/icon.png" alt="Logo">
+    </div>
+    <ul class="nav-links">
+        <li><a href="/">Beranda</a></li>
+        <li><a href="/classifier" class="active">Demo Program</a></li>
+        <li><a href="/acknowledgement">Acknowledgement</a></li>
+        <!-- <li><a href="#">Jurnal</a></li> -->
+        <li><a href="/manualbook" class="btn-about">Manual Book</a></li>
+    </ul>
+</nav>
+<h1 class="brand">
+    <span class="word">
+        <span class="text-outline">Hasil</span>
+        <span class="text-fill authenticity">Hasil</span>
+    </span>
+
+    <span class="word">
+        <span class="text-outline">Klasifikasi </span>
+        <span class="text-fill classifier">Klasifikasi</span>
+    </span>
+</h1>
+
+
+
+
+<!-- <div class="main-content-result">
+  <div class="left-result">
+        <div class="uploaded">
+            <h3>Uploaded Image</h3>
+            <img src="data:image/png;base64,{{ image_b64 }}" alt="Uploaded Image">
+            <p>{{ original_filename }}</p>
+        </div>
+    </div>
+
+    <div class="right-result">
+        <h3>Ensemble Prediction</h3>
+        {% if predictions and predictions.ensemble %}
+            <p>
+                {% if predictions.ensemble.prediction == 'Fake' %}
+                    <strong style="color:red;">FAKE</strong>
+                {% elif predictions.ensemble.prediction == 'Real' %}
+                    <strong style="color:green;">REAL</strong>
+                {% else %}
+                    ERROR
+                {% endif %}
+            </p>
+            <p>Confidence: {{ predictions.ensemble.confidence }}%</p>
+            
+            <div>
+                <p>Real</p>
+                <div class="progress-container">
+                    <div class="progress-bar progress-real" style="width: {{ predictions.ensemble.real_probability }}%;">
+                        {{ predictions.ensemble.real_probability }}%
+                    </div>
+                </div>
+            </div>
+            
+            <div>
+                <p>Fake</p>
+                <div class="progress-container">
+                    <div class="progress-bar progress-fake" style="width: {{ predictions.ensemble.fake_probability }}%;">
+                        {{ predictions.ensemble.fake_probability }}%
+                    </div>
+                </div>
+            </div>
+        {% else %}
+            <p>Error processing image.</p>
+        {% endif %}
+    </div>
+</div>
+
+<h3>Individual Model Predictions</h3>
+<div class="model-grid">
+    {% for prediction in predictions.individual_predictions %}
+    <div class="model-card">
+        <h4>{{ prediction.model_name }}</h4>
+        <p><strong>{{ prediction.prediction }}</strong> (Confidence: {{ prediction.confidence }}%)</p>
+
+        <p>Real</p>
+        <div class="progress-container">
+            <div class="progress-bar progress-real" style="width: {{ prediction.real_probability }}%;">
+                {{ prediction.real_probability }}%
+            </div>
+        </div>
+
+        <p>Fake</p>
+        <div class="progress-container">
+            <div class="progress-bar progress-fake" style="width: {{ prediction.fake_probability }}%;">
+                {{ prediction.fake_probability }}%
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+
+<a class="button-link" href="{{ url_for('index') }}">Analisis Gambar Lain</a> -->
+
+<div class="main-content-result">
+    <!-- TOP LEFT: Uploaded Image -->
+    <div class="uploaded-card">
+        <h3>📤 Uploaded Image</h3>
+        <img src="data:image/png;base64,{{ image_b64 }}" alt="Uploaded Image">
+        <div class="filename">{{ original_filename or "image.jpg" }}</div>
+        <div class="button-container">
+            <a class="analyze-btn" href="{{ url_for('index') }}"> Coba gambar lainnya</a>
+        </div>
+    </div>
+
+    <!-- TOP RIGHT: Ensemble Prediction -->
+    <div class="ensemble-card">
+        <span>
+            <h3>🎯 Ensemble Prediction</h3>
+
+        </span>
+
+        {% if predictions and predictions.ensemble %}
+        <span>
+            <div class="status-section">
+                {% if predictions.ensemble.prediction == 'Fake' %}
+                <div class="pill fake">FAKE</div>
+                {% elif predictions.ensemble.prediction == 'Real' %}
+                <div class="pill real">REAL</div>
+                {% else %}
+                <div class="pill">UNKNOWN</div>
+                {% endif %}
+
+            </div>
+        </span>
+        <div class="confidence">Confidence: {{ predictions.ensemble.confidence }}%</div>
+
+        <div class="probability-section">
+            <!-- Real progress -->
+            <div class="progress-row">
+                <div class="progress-title">
+                    <span>Real</span>
+                    <span>{{ predictions.ensemble.real_probability }}%</span>
+                </div>
+                <div class="track">
+                    {% if predictions.ensemble.real_probability > 0 %}
+                    <div class="bar real" style="width: {{ predictions.ensemble.real_probability }}%;"></div>
+                    {% endif %}
+                </div>
+            </div>
+
+            <!-- Fake progress -->
+            <div class="progress-row">
+                <div class="progress-title">
+                    <span>Fake</span>
+                    <span>{{ predictions.ensemble.fake_probability }}%</span>
+                </div>
+                <div class="track">
+                    {% if predictions.ensemble.fake_probability > 0 %}
+                    <div class="bar fake" style="width: {{ predictions.ensemble.fake_probability }}%;"></div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+
+        <!-- Stats Box -->
+        <div class="stats-box">
+            <div class="stat-item">
+                <div class="stat-number">4</div>
+                <div class="stat-label">Total Models</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number">4</div>
+                <div class="stat-label">Successful</div>
+            </div>
+        </div>
+
+        {% else %}
+        <p>Error processing image.</p>
+        {% endif %}
+    </div>
+
+    <!-- BOTTOM: Individual Model Predictions -->
+    <div class="individual-section">
+        <h3>📊 Individual Prediction</h3>
+
+        <div class="model-grid">
+            {% for prediction in predictions.individual_predictions %}
+            <div class="model-card">
+                <div class="model-header">
+                    <div class="model-name">{{ prediction.model_name }}</div>
+                    {% if prediction.prediction == 'Real' %}
+                    <div class="model-pill real">REAL</div>
+                    {% else %}
+                    <div class="model-pill fake">FAKE</div>
+                    {% endif %}
+                </div>
+
+                <div class="model-confidence">Confidence: {{ prediction.confidence }}%</div>
+
+                <!-- Real progress -->
+                <div class="progress-row">
+                    <div class="progress-title">
+                        <span>Real</span>
+                        <span>{{ prediction.real_probability }}%</span>
+                    </div>
+                    <div class="track">
+                        {% if prediction.real_probability > 0 %}
+                        <div class="bar real" style="width: {{ prediction.real_probability }}%;"></div>
+                        {% endif %}
+                    </div>
+                </div>
+
+                <!-- Fake progress -->
+                <div class="progress-row">
+                    <div class="progress-title">
+                        <span>Fake</span>
+                        <span>{{ prediction.fake_probability }}%</span>
+                    </div>
+                    <div class="track">
+                        {% if prediction.fake_probability > 0 %}
+                        <div class="bar fake" style="width: {{ prediction.fake_probability }}%;"></div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+
+
+{% endblock %}

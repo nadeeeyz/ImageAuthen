@@ -1,0 +1,210 @@
+{% extends "base.html" %}
+{% block title %}Image Authencity Classifier{% endblock %}
+{% block container_class %}container-page{% endblock %}
+{% block content %}
+<nav class="navbar">
+  <div class="logo">
+    <img src="static/images/icon.png" alt="Logo">
+  </div>
+  <ul class="nav-links">
+    <li><a href="/">Beranda</a></li>
+    <li><a href="/classifier" class="active">Demo Program</a></li>
+    <li><a href="/acknowledgement">Acknowledgement</a></li>
+    <!-- <li><a href="#">Jurnal</a></li> -->
+    <li><a href="/manualbook" class="btn-about">Manual Book</a></li>
+  </ul>
+</nav>
+
+
+<h1 class="brand">
+  <span class="word">
+    <span class="text-outline">Image Authenticity</span>
+    <span class="text-fill authenticity">Image Authenticity</span>
+  </span>
+
+  <span class="word">
+    <span class="text-outline">Classifier</span>
+    <span class="text-fill classifier">Classifier</span>
+  </span>
+</h1>
+
+
+<!-- Flash Messages -->
+{% with messages = get_flashed_messages() %}
+{% if messages %}
+<div class="flash-messages">
+  {% for message in messages %}
+  <div class="flash-message">{{ message }}</div>
+  {% endfor %}
+</div>
+{% endif %}
+{% endwith %}
+
+<div class="main-content">
+  <div class="left-section" id="uploadContainer">
+    <form method="post" enctype="multipart/form-data" id="uploadForm">
+      <div class="upload-icon">
+        <img src="{{ url_for('static', filename='images/foto.png') }}"
+          alt="Upload Icon" id="uploadIcon">
+      </div>
+      <div class="upload-text" id="uploadText">Drag & Drop Your Image Here</div>
+      <div class="upload-subtext" id="uploadSubtext">or click to browse file</div>
+
+      <button type="button" class="browse-button" onclick="document.getElementById('fileInput').click()">
+        📂 Browse File
+      </button>
+
+      <input type="file" id="fileInput" name="file" accept="image/png,image/jpeg,image/jpg" class="file-input">
+
+      <div class="preview-container" id="previewContainer">
+        <img id="previewImage" class="preview-image" alt="Preview">
+
+        <div class="button-group">
+          <button type="button" class="remove-button" onclick="resetUpload()">✖ Remove</button>
+          <button type="submit" id="predictButton" class="predict-button">🔍 Predict</button>
+        </div>
+
+        <div id="selectedFileInfo" class="selected-file-info"></div>
+      </div>
+
+
+      <!-- <button type="submit" id="predictButton" class="predict-button">
+        🔍 Predict Authenticity
+      </button> -->
+    </form>
+  </div>
+  <div class="right-section">
+    <h1 class="brand2">
+      <span class="word">
+        <span class="text-outline">Format yang diperbolehkan</span>
+        <span class="text-fill format-img">Format yang diperbolehkan</span>
+      </span>
+    </h1>
+    <div class="formats-and-car" style="display:flex;  gap:10px;">
+      <div class="format-icons">
+        <div class="format-icon"><img
+            src="{{ url_for('static', filename='images/png.png') }}"
+            alt="PNG"></div>
+        <div class="format-icon"><img
+            src="{{ url_for('static', filename='images/jpg.png') }}"
+            alt="JPG"></div>
+        <div class="format-icon"><img
+            src="{{ url_for('static', filename='images/jpeg.png') }}"
+            alt="JPEG"></div>
+      </div>
+      <div class="robo-car">
+        <img src="{{ url_for('static', filename='images/robocar.png') }}"
+          alt="Robot Car">
+      </div>
+    </div>
+    <p style="color: #888;">Maximum file size: 16MB</p>
+  </div>
+
+</div>
+</div>
+
+<script>
+  const uploadContainer = document.getElementById('uploadContainer');
+  const fileInput = document.getElementById('fileInput');
+  const previewContainer = document.getElementById('previewContainer');
+  const previewImage = document.getElementById('previewImage');
+  const selectedFileInfo = document.getElementById('selectedFileInfo');
+  const predictButton = document.getElementById('predictButton');
+  const uploadIconWrapper = document.querySelector('.upload-icon');
+  const uploadText = document.getElementById('uploadText');
+  const uploadSubtext = document.getElementById('uploadSubtext');
+
+  // Drag and drop functionality
+  uploadContainer.addEventListener('dragover', (e) => {
+    e.preventDefault();
+    uploadContainer.classList.add('dragover');
+  });
+
+  uploadContainer.addEventListener('dragleave', (e) => {
+    e.preventDefault();
+    if (!uploadContainer.contains(e.relatedTarget)) {
+      uploadContainer.classList.remove('dragover');
+    }
+  });
+
+  uploadContainer.addEventListener('drop', (e) => {
+    e.preventDefault();
+    uploadContainer.classList.remove('dragover');
+
+    const files = e.dataTransfer.files;
+    if (files.length > 0) {
+      handleFileSelect(files[0]);
+    }
+  });
+
+  // File input change
+  fileInput.addEventListener('change', (e) => {
+    if (e.target.files.length > 0) {
+      handleFileSelect(e.target.files[0]);
+    }
+  });
+
+  // Click to browse
+  uploadContainer.addEventListener('click', (e) => {
+    if (!e.target.closest('.browse-button') && !e.target.closest('.predict-button')) {
+      fileInput.click();
+    }
+  });
+
+ function handleFileSelect(file) {
+  // Validate file type
+  const allowedTypes = ['image/png', 'image/jpeg', 'image/jpg'];
+  if (!allowedTypes.includes(file.type)) {
+    alert('Invalid file type. Please select PNG, JPG, or JPEG files only.');
+    return;
+  }
+
+  // Validate file size (16MB limit)
+  const maxSize = 16 * 1024 * 1024;
+  if (file.size > maxSize) {
+    alert('File size exceeds 16MB limit. Please choose a smaller file.');
+    return;
+  }
+
+  // Show preview
+  const reader = new FileReader();
+  reader.onload = (e) => {
+    previewImage.src = e.target.result;
+    previewContainer.style.display = 'block';
+  };
+  reader.readAsDataURL(file);
+
+  // Update file info
+  const fileSize = (file.size / 1024 / 1024).toFixed(2);
+  selectedFileInfo.innerHTML = `
+    <strong>Selected:</strong> ${file.name}<br>
+    <strong>Size:</strong> ${fileSize} MB
+  `;
+
+  // Show predict button
+  predictButton.style.display = 'inline-block';
+
+  // Hide original elements
+  uploadIconWrapper.style.display = 'none';
+  uploadText.style.display = 'none';
+  uploadSubtext.style.display = 'none';
+  document.querySelector('.browse-button').style.display = 'none'; // sembunyiin browse
+
+  // No more green background
+  uploadContainer.classList.remove('upload-success');
+}
+
+function resetUpload() {
+  previewContainer.style.display = 'none';
+  predictButton.style.display = 'none';
+  uploadIconWrapper.style.display = 'block'; 
+  uploadText.style.display = 'block';
+  uploadSubtext.style.display = 'block';
+  document.querySelector('.browse-button').style.display = 'inline-flex'; // munculin lagi
+
+  fileInput.value = '';
+}
+</script>
+
+{% endblock %}
+

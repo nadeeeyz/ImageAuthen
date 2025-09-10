@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+{% block title %}Image Authenticity Classifier{% endblock %}
+{% block container_class %}container-center{% endblock %}
+{% block content %}
+<nav class="navbar">
+    <div class="logo">
+        <img src="static/images/icon.png" alt="Logo">
+    </div>
+    <ul class="nav-links">
+        <li><a href="/" class="active">Beranda</a></li>
+        <li><a href="/classifier">Demo Program</a></li>
+        <li><a href="/acknowledgement">Acknowledgement</a></li>
+        <!-- <li><a href="#">Jurnal</a></li> -->
+         
+        <li><a href="/manualbook" class="btn-about" > Manual Book</a></li>
+    </ul>
+</nav>
+
+<div class="intro-section">
+    <!-- Bot di kiri -->
+    <div class="bot-wrapper">
+        <!-- <img src="{{ url_for('static', filename='images/shadow.png') }}" alt="Shadow" class="shadow-img"> -->
+        <img src="{{ url_for('static', filename='images/bot.png') }}"
+            alt="Bot" class="bot-img">
+    </div>
+
+
+    <!-- Bagian kanan: Logo, Error, dan Tulisan -->
+    <div class="content-wrapper">
+        <br>
+        <div class="logo-row">
+            <img src="{{ url_for('static', filename='images/IAC.png') }}"
+                alt="IAC Logo" class="iac-img">
+            <img src="{{ url_for('static', filename='images/error.png') }}"
+                alt="Error Icon" class="error-img">
+        </div>
+
+        <h4 class="subtitle">
+            Pendekatan <em>End-to-End</em> Membedakan Gambar Asli dan <em>AI-Generated</em>
+        </h4>
+
+        <p class="desc">
+            Sistem klasifikasi keaslian gambar yang mengintegrasikan 4 varian DenseNet-121 dengan mekanisme atensi
+            <em>Squeeze-and-Excitation (SE)</em>  yakni <em>Plain, Early, Mid, Late</em>. Hasil prediksi sistem diperoleh melalui ensemble rata-rata dari
+            keempat
+            model
+        </p>
+        <div class="cta-wrapper"> <a href="{{ url_for('index') }}" class="cta-btn">🎭 Real or
+                Fake?</a></div>
+
+    </div>
+</div>
+
+
+
+{% endblock %}

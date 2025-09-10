@@ -1,0 +1,262 @@
+{% extends "base.html" %}
+{% block title %}Image Authenticity Classifier{% endblock %}
+{% block container_class %}container-center{% endblock %}
+{% block content %}
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+
+<nav class="navbar">
+    <div class="logo">
+        <img src="static/images/icon.png" alt="Logo">
+    </div>
+    <ul class="nav-links">
+        <li><a href="/">Beranda</a></li>
+        <li><a href="/classifier">Demo Program</a></li>
+        <li><a href="/acknowledgement" class="active">Acknowledgement</a></li>
+        <!-- <li><a href="#">Jurnal</a></li> -->
+        <li><a href="/manualbook" class="btn-about">Manual Book</a></li>
+    </ul>
+</nav>
+
+<div class="intro-section">
+        <!-- Bagian kanan: Logo, Error, dan Tulisan -->
+    <div class="content-wrapper" style="margin: auto;">
+        <h1 class="brand3">
+            <span class="word">
+                <span class="text-outline">Acknowledgement</span>
+                <span class="text-fill acknowledgement">Acknowledgement</span>
+            </span>
+        </h1>
+
+        <h4 class="subtitle">
+            Integrasi Squeeze-and-Excitation pada DenseNet-121 untuk Klasifikasi Gambar Asli dan <em>AI-Generated</em>
+        </h4>
+
+        <p class="desc">
+           Apresiasi kepada para kontributor, teknologi, dan sumber daya yang membantu dalam pembuatan aplikasi ini.
+        </p>
+
+    </div>
+    <!-- Bot di kiri -->
+    <div class="bot-wrapper">
+        <!-- <img src="{{ url_for('static', filename='images/shadow.png') }}" alt="Shadow" class="shadow-img"> -->
+        <img src="{{ url_for('static', filename='images/STAR.png') }}"
+            alt="Bot" class="bot-img" style="width: 500px; height: auto;  ">
+    </div>
+
+
+
+</div>
+
+<hr class="divider">
+
+<div class="contributors-section">
+
+      <div class="contributors-wrapper">
+              <h1 class="brand3">
+            <span class="word">
+                <span class="text-outline">Kontributor</span>
+                <span class="text-fill acknowledgement"> Kontributor</span>
+            </span>
+        </h1>
+        <!-- Kiri: Gambar -->
+        <div class="contributors-image">
+            <img src="{{ url_for('static', filename='images/contri.png') }}" alt="Contribute" />
+        </div>
+        <!-- Kanan: Daftar kontributor -->
+        <div class="contributors-list-wrapper">
+            <ul class="contributors-list">
+                <li>
+                    <strong>Nadiyya Hasaniyyah </strong> – Pengembang Utama 
+                    <a href="https://id.linkedin.com/in/nadiyya-hasaniyyah" target="_blank" class="linkedin-link">
+                        <i class="fab fa-linkedin"></i>
+                    </a>
+                </li>
+                <li><strong>Khadijah, S.Kom., M.Cs.</strong>Dosen Pembimbing 1</li>
+                <li><strong>Dr. Sutikno, S.T., M.Cs.</strong> – Dosen Pembimbing 2</li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+
+<hr class="divider">
+
+<div class="tools-section">
+    <h1 class="brand3">
+        ⚙️
+        <span class="word">
+            <span class="text-outline">Tools dan Framework</span>
+            <span class="text-fill acknowledgement">Tools dan Framework</span>
+        </span>
+    </h1>
+    <p style="margin: 0;">
+        Berbagai alat dan framework digunakan dalam pengembangan aplikasi
+    </p>
+
+    <div class="tools-grid">
+        <!-- Python -->
+        <div class="tool-card">
+            <img src="{{ url_for('static', filename='images/python.png') }}" alt="Python" />
+            <h3>Python</h3>
+            <p>Programming Language</p>
+        </div>
+
+        <!-- PyTorch -->
+        <div class="tool-card">
+            <img src="{{ url_for('static', filename='images/pytorch.png') }}" alt="PyTorch" />
+            <h3>PyTorch</h3>
+            <p>Deep Learning Framework</p>
+        </div>
+
+        <!-- Scikit-learn -->
+        <!-- <div class="tool-card">
+            <img src="{{ url_for('static', filename='images/scikit_learn.png') }}" alt="Scikit-learn" />
+            <h3>Scikit-learn</h3>
+            <p>Machine Learning & Evaluation</p>
+        </div> -->
+
+        <!-- Flask -->
+        <div class="tool-card">
+            <img src="{{ url_for('static', filename='images/flask.png') }}" alt="Flask" />
+            <h3>Flask</h3>
+            <p>Web Framework</p>
+        </div>
+
+        <!-- HTML -->
+        <div class="tool-card">
+            <img src="{{ url_for('static', filename='images/html.png') }}" alt="HTML" />
+            <h3>HTML</h3>
+            <p>Markup Language</p>
+        </div>
+
+        <!-- CSS -->
+        <div class="tool-card">
+            <img src="{{ url_for('static', filename='images/css.png') }}" alt="CSS" />
+            <h3>CSS</h3>
+            <p>Styling Front-End</p>
+        </div>
+
+        <!-- JavaScript -->
+        <div class="tool-card">
+            <img src="{{ url_for('static', filename='images/javascript.png') }}" alt="JavaScript" />
+            <h3>JavaScript</h3>
+            <p>Programming Language</p>
+        </div>
+
+        <!-- Kaggle -->
+        <div class="tool-card">
+            <img src="{{ url_for('static', filename='images/kaggle.png') }}" alt="Kaggle" />
+            <h3>Kaggle</h3>
+            <p>Dataset & Training Platform</p>
+        </div>
+
+        <!-- Git -->
+        <div class="tool-card">
+            <img src="{{ url_for('static', filename='images/git.png') }}" alt="Git" />
+            <h3>Git</h3>
+            <p>Version Control</p>
+        </div>
+
+        <!-- GitHub -->
+        <div class="tool-card">
+            <img src="{{ url_for('static', filename='images/github.png') }}" alt="GitHub" />
+            <h3>GitHub</h3>
+            <p>Version Control Hosting</p>
+        </div>
+
+        <!-- Visual Studio Code -->
+        <div class="tool-card">
+            <img src="{{ url_for('static', filename='images/vscode.png') }}" alt="VS Code" />
+            <h3>VSCode</h3>
+            <p>IDE</p>
+        </div>
+
+        <!-- Figma -->
+        <div class="tool-card">
+            <img src="{{ url_for('static', filename='images/figma.png') }}" alt="Figma" />
+            <h3>Figma</h3>
+            <p>Design Tool</p>
+        </div>
+
+        <!-- Vercel -->
+        <div class="tool-card">
+            <img src="{{ url_for('static', filename='images/vercel.png') }}" alt="Vercel" />
+            <h3>Vercel</h3>
+            <p>Cloud Hosting Platform</p>
+        </div>
+    </div>
+</div>
+
+<hr class="divider">
+
+<div class="resources-section">
+    <h1 class="brand3">
+        <span class="word">
+            <span class="text-outline">Sumber Daya Lainnya</span>
+            <span class="text-fill acknowledgement">Sumber Daya Lainnya</span>
+        </span>
+    </h1>
+    <p class="resources-subtitle">
+        Beberapa sumber daya lain yang membantu dalam pembuatan aplikasi ini.
+    </p>
+
+    <div class="resources-grid">
+        <!-- Datasets -->
+        <div class="resource-card">
+           
+            <a href="https://www.kaggle.com/datasets/birdy654/cifake-real-and-ai-generated-synthetic-images" target="_blank">
+                 <h3>Datasets</h3>
+                <p>CIFAKE (AI-generated vs Real Images)</p>
+            </a>
+        </div>
+
+        <!-- Pre-trained Model -->
+        <div class="resource-card">
+            
+            <a href="https://pytorch.org/vision/stable/models/generated/torchvision.models.densenet121.html" target="_blank">
+                <h3>Pre-trained Model</h3>
+                
+                <p>DenseNet121 (ImageNet Pretrained)</p>
+            </a>
+        </div>
+
+        <!-- Attention -->
+        <div class="resource-card">
+            
+            <a href="https://arxiv.org/abs/1709.01507" target="_blank">
+                <h3>Attention</h3>
+                <p> Squeeze-and-Excitations</p>
+               
+            </a>
+        </div>
+
+        <!-- Icons -->
+        <div class="resource-card">
+            
+            <a href="https://fontawesome.com/" target="_blank">
+                <h3>Icons</h3>
+                <p>Font Awesome</p>
+                
+            </a>
+        </div>
+
+        <!-- 3D Illustration -->
+        <div class="resource-card">
+            
+            <a href="https://icons8.com/" target="_blank">
+                <h3>3D Illustration</h3>
+                <p> Icons8</p>
+               
+            </a>
+        </div>
+<img src="{{ url_for('static', filename='images/fly.png') }}"
+                alt="Error Icon" class="error-img" style="margin-left: 70px;  height: auto;">
+         
+    </div>
+    <br> <br>
+    <img src="{{ url_for('static', filename='images/error.png') }}"
+                alt="Error Icon" class="error-img">
+</div>
+
+
+{% endblock %}

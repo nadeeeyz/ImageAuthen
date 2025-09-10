@@ -1,0 +1,114 @@
+{% extends "base.html" %}
+{% block title %}Image Authenticity Classifier{% endblock %}
+{% block container_class %}container-page{% endblock %}
+{% block content %}
+<style>
+    .iframe-wrapper {
+  display: flex;
+  justify-content: flex-start; /* dorong ke kiri */
+}
+
+.fp-iframe {
+  border: 1px solid lightgray;
+  width: 500px;
+  height: 500px;
+}
+
+/* Responsif untuk HP */
+@media screen and (max-width: 768px) {
+  .fp-iframe {
+    width: 100%;   /* otomatis menyesuaikan */
+    height: 400px; /* bisa disesuaikan */
+  }
+}
+
+</style>
+
+<nav class="navbar">
+    <div class="logo">
+        <img src="static/images/icon.png" alt="Logo">
+    </div>
+    <ul class="nav-links">
+        <li><a href="/" >Beranda</a></li>
+        <li><a href="/classifier">Demo Program</a></li>
+        <li><a href="/acknowledgement" >Acknowledgement</a></li>
+        <!-- <li><a href="#">Jurnal</a></li> -->
+         
+        <li><a href="/manualbook" class="btn-about active" > Manual Book</a></li>
+    </ul>
+</nav>
+<div class="iframe-wrapper">
+  <iframe allowfullscreen="allowfullscreen" 
+          allow="clipboard-write" 
+          scrolling="no" 
+          class="fp-iframe"
+          src="https://heyzine.com/flip-book/112a363849.html">
+  </iframe>
+    <div class="pdf-link" style="margin: 20px;">
+        <p style="color: blueviolet; font-size: 8px;" >Jika tampilan kurang jelas,<br> gunakan fitur zoom/fullscreen <br> pada flipbook atau buka file<br> PDF dengan tombol berikut.</p>     <a href="https://drive.google.com/file/d/1W4JNAYRKGO8DkhT7H2z-pwFm46YbbIiY/view?usp=sharing" target="_blank">
+      <i class="fa-brands fa-google-drive"></i>PDF
+    </a>
+
+  </div>
+</div>
+</div>
+
+<style>
+
+/* Ubah warna panah navigasi jadi putih */
+.fp-iframe {
+    background: white;
+  width: 1000px;
+  height: 600px;
+}
+
+/* styling untuk iframe contents */
+.fp-iframe {
+  color-scheme: dark; /* biar default UI condong ke putih */
+}
+
+/* Kalau heyzine pakai ikon panah SVG dengan class */
+.fp-iframe ::-webkit-scrollbar-button {
+  color: white !important;
+}
+
+/* Coba override default panah */
+.fp-iframe .arrow,
+.fp-iframe .fp-arrow,
+.fp-iframe .heyzine-arrow {
+  color: #fff !important;
+  fill: #fff !important;
+}
+
+.pdf-link a {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 20px;
+  background-color: #8e2de2;
+  color: #fff;
+  border-radius: 25px;
+  text-decoration: none;
+  transition: background 0.3s ease;
+}
+.pdf-link {
+  position: absolute;
+}
+
+.pdf-link a:hover {
+  background-color: #6d1bb5; /* sedikit lebih gelap saat hover */
+}
+
+
+/* Responsif untuk HP */
+@media screen and (max-width: 768px) {
+  .fp-iframe {
+    width: 100%;   /* otomatis menyesuaikan layar */
+  }
+}
+
+</style>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+
+
+{% endblock %}
