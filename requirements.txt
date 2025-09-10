@@ -1,0 +1,14 @@
+# Web framework
+Flask>=2.3
+Werkzeug>=2.3
+
+# Image processing
+Pillow>=10.0
+numpy>=1.26
+
+# PyTorch & TorchVision
+torch>=2.0
+torchvision>=0.17
+
+# Opsional, tapi sering dipakai di deploy
+typing-extensions>=4.7  # kalau pakai type hints di PyTorch 2.x
