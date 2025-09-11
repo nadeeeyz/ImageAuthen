@@ -31,6 +31,3 @@ Pillow==10.0.1
 
 # HTTP requests
 requests==2.31.0
-
-# Optional: jika butuh numpy
-numpy==1.24.3
