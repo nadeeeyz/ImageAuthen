@@ -266,36 +266,152 @@ from io import BytesIO
 # Import semua class model
 from modelhandler import DenseNet, DenseNet_SE_Early, DenseNet_SE_Mid, DenseNet_SE_Late
 
+# class ModelHandlerHF:
+#     def __init__(self):
+#         self.device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+#         self.transform = transforms.Compose([
+#             transforms.Resize((32, 32)),
+#             transforms.ToTensor(),
+#             transforms.Normalize(mean=[0.485, 0.456, 0.406],
+#                                  std=[0.229, 0.224, 0.225])
+#         ])
+
+#         # Link HTTPS langsung
+#         self.model_urls = {
+#             "Plain": "https://huggingface.co/nadeeeyz/Plain/resolve/main/model_plain_6.pt",
+#             "Early SE": "https://huggingface.co/nadeeeyz/EarlySE/resolve/main/model_earlySE_10.pt",
+#             "Mid SE": "https://huggingface.co/nadeeeyz/Mid/resolve/main/model_midSE_6.pt",
+#             "Late SE": "https://huggingface.co/nadeeeyz/Late/resolve/main/model_lateSE_6.pt",
+#         }
+
+#         self.models_cache = {}
+
+#     def load_model(self, name):
+#         if name in self.models_cache:
+#             return self.models_cache[name]
+
+#         url = self.model_urls[name]
+#         r = requests.get(url)
+#         r.raise_for_status()
+#         buffer = BytesIO(r.content)
+
+#         # Buat instance model sesuai tipe
+#         if name == "Plain":
+#             model = DenseNet()
+#         elif name == "Early SE":
+#             model = DenseNet_SE_Early()
+#         elif name == "Mid SE":
+#             model = DenseNet_SE_Mid()
+#         elif name == "Late SE":
+#             model = DenseNet_SE_Late()
+#         else:
+#             raise ValueError(f"Unknown model: {name}")
+
+#         # Load state_dict
+#         state_dict = torch.load(buffer, map_location=self.device)
+#         model.load_state_dict(state_dict)
+#         model.to(self.device)
+#         model.eval()
+#         self.models_cache[name] = model
+#         return model
+
+#     def predict(self, image_file):
+#         image = Image.open(image_file).convert("RGB")
+#         tensor = self.transform(image).unsqueeze(0).to(self.device)
+
+#         predictions = []
+#         total_real_prob = 0
+#         total_fake_prob = 0
+#         successful = 0
+
+#         for name in self.model_urls:
+#             try:
+#                 model = self.load_model(name)
+#                 with torch.no_grad():
+#                     logits = model(tensor)
+#                     probs = torch.sigmoid(logits).item()
+#                     real_prob = probs * 100
+#                     fake_prob = (1 - probs) * 100
+#                     pred_class = "Real" if probs >= 0.5 else "Fake"
+#                     conf = max(real_prob, fake_prob)
+
+#                 predictions.append({
+#                     "model_name": name,
+#                     "prediction": pred_class,
+#                     "confidence": round(conf, 2),
+#                     "real_probability": round(real_prob, 2),
+#                     "fake_probability": round(fake_prob, 2),
+#                 })
+
+#                 total_real_prob += real_prob
+#                 total_fake_prob += fake_prob
+#                 successful += 1
+
+#             except Exception as e:
+#                 predictions.append({
+#                     "model_name": name,
+#                     "prediction": "Error",
+#                     "real_probability": 0.0,
+#                     "fake_probability": 0.0,
+#                     "confidence": 0.0,
+#                     "error": str(e)
+#                 })
+
+#         # Ensemble
+#         if successful > 0:
+#             avg_real = total_real_prob / successful
+#             avg_fake = total_fake_prob / successful
+#             ensemble_pred = "Real" if avg_real >= avg_fake else "Fake"
+#             ensemble_conf = round(max(avg_real, avg_fake), 2)
+#         else:
+#             avg_real = avg_fake = ensemble_conf = 0
+#             ensemble_pred = "Error"
+
+#         return {
+#             "ensemble": {
+#                 "prediction": ensemble_pred,
+#                 "confidence": ensemble_conf,
+#                 "real_probability": round(avg_real, 2),
+#                 "fake_probability": round(avg_fake, 2),
+#             },
+#             "individual_predictions": predictions,
+#             "total_models": len(self.model_urls),
+#             "successful_predictions": successful
+#         }
+import torch
+import torch.nn as nn
+import torchvision.transforms as transforms
+from PIL import Image
+from io import BytesIO
+import os
+
+import requests
+
+# Import semua class model kamu
+from modelhandler import DenseNet, DenseNet_SE_Early, DenseNet_SE_Mid, DenseNet_SE_Late
+
 class ModelHandlerHF:
-    def __init__(self):
-        self.device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+    def __init__(self, models_dir="models"):
+        self.device = torch.device("cpu")  # pakai CPU untuk Vercel
         self.transform = transforms.Compose([
             transforms.Resize((32, 32)),
             transforms.ToTensor(),
             transforms.Normalize(mean=[0.485, 0.456, 0.406],
                                  std=[0.229, 0.224, 0.225])
         ])
+        self.models_dir = models_dir
+        os.makedirs(self.models_dir, exist_ok=True)
 
-        # Link HTTPS langsung
-        self.model_urls = {
-            "Plain": "https://huggingface.co/nadeeeyz/Plain/resolve/main/model_plain_6.pt",
-            "Early SE": "https://huggingface.co/nadeeeyz/EarlySE/resolve/main/model_earlySE_10.pt",
-            "Mid SE": "https://huggingface.co/nadeeeyz/Mid/resolve/main/model_midSE_6.pt",
-            "Late SE": "https://huggingface.co/nadeeeyz/Late/resolve/main/model_lateSE_6.pt",
+        # Nama file lokal untuk masing-masing model
+        self.model_files = {
+            "Plain": os.path.join(models_dir, "model_plain_6.pt"),
+            "Early SE": os.path.join(models_dir, "model_earlySE_10.pt"),
+            "Mid SE": os.path.join(models_dir, "model_midSE_6.pt"),
+            "Late SE": os.path.join(models_dir, "model_lateSE_6.pt"),
         }
 
-        self.models_cache = {}
-
-    def load_model(self, name):
-        if name in self.models_cache:
-            return self.models_cache[name]
-
-        url = self.model_urls[name]
-        r = requests.get(url)
-        r.raise_for_status()
-        buffer = BytesIO(r.content)
-
-        # Buat instance model sesuai tipe
+    def load_model_from_file(self, name):
+        """Load model sekali saja dari file lokal."""
         if name == "Plain":
             model = DenseNet()
         elif name == "Early SE":
@@ -307,12 +423,11 @@ class ModelHandlerHF:
         else:
             raise ValueError(f"Unknown model: {name}")
 
-        # Load state_dict
-        state_dict = torch.load(buffer, map_location=self.device)
+        # Load state dict
+        state_dict = torch.load(self.model_files[name], map_location=self.device)
         model.load_state_dict(state_dict)
         model.to(self.device)
         model.eval()
-        self.models_cache[name] = model
         return model
 
     def predict(self, image_file):
@@ -324,9 +439,10 @@ class ModelHandlerHF:
         total_fake_prob = 0
         successful = 0
 
-        for name in self.model_urls:
+        for name in self.model_files:
             try:
-                model = self.load_model(name)
+                # Load satu model per iterasi
+                model = self.load_model_from_file(name)
                 with torch.no_grad():
                     logits = model(tensor)
                     probs = torch.sigmoid(logits).item()
@@ -346,6 +462,10 @@ class ModelHandlerHF:
                 total_real_prob += real_prob
                 total_fake_prob += fake_prob
                 successful += 1
+
+                # Hapus model dari memori untuk mengurangi OOM
+                del model
+                torch.cuda.empty_cache()
 
             except Exception as e:
                 predictions.append({
@@ -375,9 +495,10 @@ class ModelHandlerHF:
                 "fake_probability": round(avg_fake, 2),
             },
             "individual_predictions": predictions,
-            "total_models": len(self.model_urls),
+            "total_models": len(self.model_files),
             "successful_predictions": successful
         }
+
 
 # class ModelHandlerHF:
 #     def __init__(self):
@@ -470,3 +591,5 @@ class ModelHandlerHF:
 #             "total_models": len(self.model_urls),
 #             "successful_predictions": successful
 #         }
+
+
