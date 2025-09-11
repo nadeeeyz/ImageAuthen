@@ -18,10 +18,22 @@ requests
 Flask==2.3.3
 Werkzeug==2.3.7
 
-# PyTorch CPU only (lebih ringan)
-torch==2.0.1+cpu --find-links https://download.pytorch.org/whl/torch_stable.html
-torchvision==0.15.2+cpu --find-links https://download.pytorch.org/whl/torch_stable.html
+# Minimal requirements untuk Vercel
+Flask==2.3.3
+Werkzeug==2.3.7
 
+# PyTorch CPU only - versi paling ringan
+torch==1.13.1+cpu -f https://download.pytorch.org/whl/cpu/torch_stable.html
+torchvision==0.14.1+cpu -f https://download.pytorch.org/whl/cpu/torch_stable.html
+
+# Image processing
+Pillow==10.0.1
+
+# HTTP requests
+requests==2.31.0
+
+# Utilities
+numpy==1.24.3
 # Image processing
 Pillow==10.0.1
 
