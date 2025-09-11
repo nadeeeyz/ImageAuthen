@@ -13,6 +13,7 @@ torchvision>=0.17
 gunicorn
 joblib
 scikit-learn
+requests
 
 # Opsional, tapi sering dipakai di deploy
 typing-extensions>=4.7  # kalau pakai type hints di PyTorch 2.x
