@@ -15,5 +15,19 @@ joblib
 scikit-learn
 requests
 
-# Opsional, tapi sering dipakai di deploy
-typing-extensions>=4.7  # kalau pakai type hints di PyTorch 2.x
+# Optimized requirements.txt untuk Vercel
+Flask==2.3.3
+Werkzeug==2.3.7
+
+# PyTorch CPU only (lebih ringan)
+torch==2.0.1+cpu --find-links https://download.pytorch.org/whl/torch_stable.html
+torchvision==0.15.2+cpu --find-links https://download.pytorch.org/whl/torch_stable.html
+
+# Image processing
+Pillow==10.0.1
+
+# HTTP requests
+requests==2.31.0
+
+# Optional: jika butuh numpy
+numpy==1.24.3
