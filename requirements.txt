@@ -1,33 +1,10 @@
-# Web framework
-Flask>=2.3
-Werkzeug>=2.3
-
-
-numpy>=1.26
-
-# PyTorch & TorchVision
-torch>=2.0
-torchvision>=0.17
-
+Flask==2.3.3
+Werkzeug==2.3.7
+numpy==1.26.0
+torch==2.0.0
+torchvision==0.17.0
 gunicorn
 joblib
-scikit-learn
-requests
-
-# Optimized requirements.txt untuk Vercel
-Flask==2.3.3
-Werkzeug==2.3.7
-
-# Minimal requirements untuk Vercel
-Flask==2.3.3
-Werkzeug==2.3.7
-# Image processing
-Pillow==10.0.1
-
-# HTTP requests
+scikit-learn==1.3.2
 requests==2.31.0
-# Image processing
 Pillow==10.0.1
-
-# HTTP requests
-requests==2.31.0
