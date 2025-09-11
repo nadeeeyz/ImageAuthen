@@ -65,10 +65,15 @@
 import os
 from flask import Flask, render_template, request, redirect, url_for, flash
 from werkzeug.utils import secure_filename
-from modelhandler import ModelHandler
+# from modelhandler import ModelHandler
 import base64
 from io import BytesIO
 from PIL import Image
+
+from modelhandler import ModelHandlerHF
+
+model_handler = ModelHandlerHF()
+
 
 UPLOAD_FOLDER = "static/uploads"
 ALLOWED_EXTENSIONS = {"png", "jpg", "jpeg"}
@@ -80,7 +85,7 @@ app.config["UPLOAD_FOLDER"] = UPLOAD_FOLDER
 os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 
 # Load ensemble models
-model_handler = ModelHandler(models_dir="models")
+# model_handler = ModelHandler(models_dir="models")
 
 def allowed_file(filename):
     return "." in filename and filename.rsplit(".", 1)[1].lower() in ALLOWED_EXTENSIONS
